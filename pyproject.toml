@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "cti-yocto-layer-generator"
+version = "0.1.0"
+description = "A tool to automate the process of converting Connect Tech Inc's BSP layers into Yocto layers."
+authors = ["Your Name <your.email@example.com>"]
+license = "MIT"  # Or whichever license you choose
+
+[tool.poetry.dependencies]
+python = "^3.8"  # Or whichever Python version you want to support
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
