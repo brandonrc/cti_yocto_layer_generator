@@ -7,6 +7,8 @@ license = "MIT"  # Or whichever license you choose
 
 [tool.poetry.dependencies]
 python = "^3.8"  # Or whichever Python version you want to support
+click = "^8.0.1"  # The version might change depending on when you're adding it.
+requests = "*" # The version might change depending on when you're adding it.
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"
