@@ -6,6 +6,12 @@ import click
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# main(offline_mode=True)
+# main(offline_mode=True, repo_url='https://github.com/open-
+# args: 
+# --repo-url https://github.com/open-args/open-args.git
+# --package-url https://github.com/open-args/open-args/tree/
+# --package-name open-args
 @click.command()
 @click.option('--repo-url', default=None, help='The URL of the repository.')
 @click.option('--package-url', prompt='Package URL', help='The URL of the package.')
