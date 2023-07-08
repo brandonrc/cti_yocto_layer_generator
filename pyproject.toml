@@ -10,6 +10,10 @@ python = "^3.8"  # Or whichever Python version you want to support
 click = "^8.0.1"  # The version might change depending on when you're adding it.
 requests = "*" # The version might change depending on when you're adding it.
 gitpython = "*"  # The version might change depending on when you're adding it.
+python-debian = "^0.1.49"   # the version might be different depending on the latest release
+
+[tool.poetry.scripts]
+cti-generator = 'cti_yocto_layer_generator.main:main'
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

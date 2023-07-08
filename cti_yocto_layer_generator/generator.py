@@ -23,6 +23,7 @@ class CTILayerGenerator:
         self.package_dir = os.path.join(self.run_dir, "packages")
         self.extracted_dir = os.path.join(self.run_dir, "extractedpackages")
         self.repo_dir = os.path.join(self.run_dir, "repo")
+        self.debs_dir = os.path.join(self.run_dir, "debs")
 
     # setup the directories
     # Creates package, extracted, and repo directories
@@ -31,6 +32,7 @@ class CTILayerGenerator:
         os.makedirs(self.package_dir, exist_ok=True)
         os.makedirs(self.extracted_dir, exist_ok=True)
         os.makedirs(self.repo_dir, exist_ok=True)
+        os.makedirs(self.debs_dir, exist_ok=True)
 
     # clean up the directories
     # Delete the directories
@@ -56,6 +58,20 @@ class CTILayerGenerator:
             
         if not os.path.exists(extracted_path):
             package.extract_package(package_path, extracted_path)
+            
+        # Search for all debs in extracted_packages directory then 
+        # extract them into the debs directory
+        for root, dirs, files in os.walk(extracted_path):
+            for file in files:
+                if file.endswith(".deb"):
+                    package_name = file.rsplit('.', 1)[0]  # cut off the .deb
+                    # tmp_package_dir = os.path.join(self.debs_dir, package_name)
+                    # print("Extracting deb file:")
+                    # print(tmp_package_dir)
+                    # os.makedirs(tmp_package_dir, exist_ok=True)  # Ensure directory is created if it doesn't already exist
+                    deb_file_path = os.path.join(root, file)
+                    package.extract_deb_files(deb_file_path, self.debs_dir)
+        
 
         # here you'd continue with your generation logic, using self.repo_dir and extracted_path as the paths
 

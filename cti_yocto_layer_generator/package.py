@@ -7,6 +7,7 @@ functions to download, extract, and process these packages.
 
 import requests
 import tarfile
+import subprocess
 
 # Add more functions as per your needs
 # args:
@@ -27,3 +28,20 @@ def download_package(package_url, local_path):
 def extract_package(tar_path, extract_dir):
     with tarfile.open(tar_path) as tar:
         tar.extractall(path=extract_dir)
+
+# Extracts all debian files in a debian package
+# args:
+#     deb_file_path: Path to the debian package
+#     output_directory: Path to extract the debian files to
+def extract_deb_files(deb_file_path, output_directory):
+    command = ["dpkg", "-x", deb_file_path, output_directory]
+    try:
+        result = subprocess.run(command, capture_output=True, text=True, check=True)
+        # print("Extraction successful")
+        # print("stdout:", result.stdout)
+        # print("stderr:", result.stderr)
+    except subprocess.CalledProcessError as e:
+        print("Extraction failed")
+        print("Error:", e)
+        print("stdout:", e.stdout)
+        print("stderr:", e.stderr)
