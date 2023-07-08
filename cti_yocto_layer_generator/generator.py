@@ -20,7 +20,7 @@ class CTILayerGenerator:
         self.yocto_version = yocto_version
         self.filename = os.path.basename(package_url)
         self.jetpack_version = utils.get_jetpack_version(self.filename)
-        branch_name = f"{yocto_version}-l4t-r{self.jetpack_version}"
+        self.branch_name = f"{yocto_version}-l4t-r{self.jetpack_version}"
         self.uuid = str(uuid.uuid4())
         self.base_dir = os.path.expanduser("~/.cache/cti_yocto_layer_generator/")
         self.run_dir = os.path.join(self.base_dir, self.uuid)
@@ -53,6 +53,9 @@ class CTILayerGenerator:
             git.init_repo(self.repo_dir)
         else:
             git.clone_repo(self.repo_url, self.repo_dir)
+        
+        git.create_branch(self.repo_dir, self.branch_name)
+        git.checkout_branch(self.repo_dir, self.branch_name)
             
         package_path = os.path.join(self.package_dir, os.path.basename(self.package_url))
         extracted_path = os.path.join(self.extracted_dir, os.path.splitext(os.path.basename(self.package_url))[0])
