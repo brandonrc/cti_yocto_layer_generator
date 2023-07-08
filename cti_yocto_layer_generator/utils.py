@@ -50,3 +50,24 @@ def create_directory(dir_path):
 def copy_file(src_path, dst_path):
     logger.info(f"Copying file from {src_path} to {dst_path}")
     shutil.copy(src_path, dst_path)
+
+
+# Get the machine name from a package name.
+# args:
+# package_name: the name of the package.
+def get_machine_name_from_package(package_name):
+    # Regular expression to find the part of the name to remove
+    pattern = "-[0-9]+\.[0-9]+\.[0-9]+.*"
+
+    # Search for the pattern in the package name
+    result = re.search(pattern, package_name)
+
+    # Check if the pattern was found
+    if result is None:
+        logger.error(f"No version number found in package name: {package_name}")
+        return None
+
+    # Strip off the version number and anything after it, and convert to lowercase
+    machine_name = package_name[:result.start()].lower()
+
+    return machine_name

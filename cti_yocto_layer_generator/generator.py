@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 from . import git_helpers
 from . import package
 from . import utils
+from . import yocto_helpers
 
 class CTILayerGenerator:
     def __init__(self, repo_url, package_url, offline_mode, yocto_version):
@@ -75,6 +76,9 @@ class CTILayerGenerator:
             logger.info(f"Package has not been extracted at {extracted_path}, extracting it...")
             package.extract_package(package_path, extracted_path)
             
+        yocto_helpers.create_layer_skeleton(self.repo_dir)
+        yocto_helpers.create_basic_config_files(self.repo_dir, utils.get_machine_name_from_package(os.path.basename(self.package_url)))
+            
         # Search for all debs in extracted_packages directory then 
         # extract them into the debs directory
         for root, dirs, files in os.walk(extracted_path):
@@ -86,8 +90,9 @@ class CTILayerGenerator:
                     # print(tmp_package_dir)
                     os.makedirs(tmp_package_dir, exist_ok=True)  # Ensure directory is created if it doesn't already exist
                     deb_file_path = os.path.join(root, file)
-                    logger.info(f"Extracting deb files from {deb_file_path} to {tmp_package_dir}")
-                    package.extract_deb_files(deb_file_path, tmp_package_dir)
+                    logger.info(f"Extracting deb files from {deb_file_path} to {self.repo_dir}")
+                    # package.extract_deb_files(deb_file_path, tmp_package_dir)
+                    package.extract_deb_files_and_create_bb(deb_file_path, self.repo_dir)
         
 
         # here you'd continue with your generation logic, using self.repo_dir and extracted_path as the paths
