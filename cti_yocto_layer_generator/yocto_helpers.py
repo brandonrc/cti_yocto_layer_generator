@@ -22,6 +22,9 @@ def create_layer_skeleton(layer_dir):
 def create_basic_config_files(repo_dir, machine_name):
     logger.info(f"Creating basic configuration files in {repo_dir}")
 
+    # Determine the Tegra SoC
+    soc = get_tegra_soc(machine_name)
+
     # Define the paths to the configuration files
     layer_conf_path = os.path.join(repo_dir, 'conf', 'layer.conf')
     machine_conf_path = os.path.join(repo_dir, 'conf', 'machine', f'{machine_name}.conf')
@@ -51,7 +54,7 @@ LAYERSERIES_COMPAT_{machine_name} = "honister"
     with open(machine_conf_path, 'w') as f:
         f.write(f"""
 # @{machine_name} machine configuration
-require conf/machine/include/tune-cortexa57-cortexa53.inc
+require conf/machine/include/{soc}.inc
 
 MACHINE_FEATURES = "usbhost usbgadget screen wifi bluetooth ext2"
 

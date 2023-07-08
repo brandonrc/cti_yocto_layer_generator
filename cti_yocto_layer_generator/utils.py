@@ -71,3 +71,16 @@ def get_machine_name_from_package(package_name):
     machine_name = package_name[:result.start()].lower()
 
     return machine_name
+
+def get_tegra_soc(machine_name):
+    if "orin" in machine_name:
+        return "tegra234"
+    elif "xavier" in machine_name:
+        return "tegra194"
+    elif "tx2" in machine_name:
+        return "tegra186"
+    elif "tx1" in machine_name or "nano" in machine_name:
+        return "tegra210"
+    else:
+        logger.error(f"Unknown Tegra SoC for machine name: {machine_name}")
+        return None
