@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 @click.option('--repo-url', default=None, help='The URL of the repository.')
 @click.option('--package-url', prompt='Package URL', help='The URL of the package.')
 @click.option('--offline-mode', is_flag=True, help='Run in offline mode.')
+@click.option('--yocto-version', default='dunfell', help='The Yocto release version.')
 def main(repo_url, package_url, offline_mode):
     """CTI Layer Generator"""
     
@@ -35,7 +36,7 @@ def main(repo_url, package_url, offline_mode):
         click.echo("Both offline mode and repo URL are set. Proceeding with offline mode.")
         repo_url = None  # Reset repo_url as offline_mode takes precedence
 
-    generator = CTILayerGenerator(repo_url, package_url, offline_mode)
+    generator = CTILayerGenerator(repo_url, package_url, offline_mode, yocto_version)
     generator.generate()
 
 if __name__ == "__main__":

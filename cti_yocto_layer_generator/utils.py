@@ -7,6 +7,28 @@ directory management functions, and other miscellaneous helper functions.
 
 import os
 import shutil
+import re
+
+
+# Extract the Jetpack version from a filename.
+# args:
+# filename: the filename to extract the version from.
+def extract_jetpack_version(filename):
+    """Extract the Jetpack version from a filename."""
+    # Split the filename on the '-' character
+    parts = filename.split('-')
+
+    # Iterate over the parts
+    for part in parts:
+        # Use a regular expression to check if the part is a version number
+        match = re.match(r"\d+\.\d+\.\d+", part)
+        if match:
+            # If a match is found, return it
+            return match.group()
+
+    # If no match is found, return None
+    return None
+
 
 # Create a directory if it doesn't exist.
 # args:

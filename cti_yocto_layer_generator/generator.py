@@ -13,10 +13,14 @@ from . import package
 from . import utils
 
 class CTILayerGenerator:
-    def __init__(self, repo_url, package_url, offline_mode):
+    def __init__(self, repo_url, package_url, offline_mode, yocto_version):
         self.repo_url = repo_url
         self.package_url = package_url
         self.offline_mode = offline_mode
+        self.yocto_version = yocto_version
+        self.filename = os.path.basename(package_url)
+        self.jetpack_version = utils.get_jetpack_version(self.filename)
+        branch_name = f"{yocto_version}-l4t-r{self.jetpack_version}"
         self.uuid = str(uuid.uuid4())
         self.base_dir = os.path.expanduser("~/.cache/cti_yocto_layer_generator/")
         self.run_dir = os.path.join(self.base_dir, self.uuid)
