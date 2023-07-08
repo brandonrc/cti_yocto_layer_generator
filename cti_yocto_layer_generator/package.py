@@ -8,12 +8,18 @@ functions to download, extract, and process these packages.
 import requests
 import tarfile
 import subprocess
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Add more functions as per your needs
 # args:
 #    package_url: URL of the package to download
 #    local_path: Path to save the downloaded package to
 def download_package(package_url, local_path):
+    logger.info(f"Downloading package from {package_url} to {local_path}")
     response = requests.get(package_url, stream=True)
     response.raise_for_status()
 
@@ -26,6 +32,7 @@ def download_package(package_url, local_path):
 #     tar_path: Path to the tar file to extract
 #     extract_dir: Path to extract the tar file to
 def extract_package(tar_path, extract_dir):
+    logger.info(f"Extracting package from {tar_path} to {extract_dir}")
     with tarfile.open(tar_path) as tar:
         tar.extractall(path=extract_dir)
 
@@ -34,6 +41,7 @@ def extract_package(tar_path, extract_dir):
 #     deb_file_path: Path to the debian package
 #     output_directory: Path to extract the debian files to
 def extract_deb_files(deb_file_path, output_directory):
+    logger.info(f"Extracting deb files from {deb_file_path} to {output_directory}")
     command = ["dpkg", "-x", deb_file_path, output_directory]
     try:
         result = subprocess.run(command, capture_output=True, text=True, check=True)

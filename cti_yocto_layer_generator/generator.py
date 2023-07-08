@@ -7,6 +7,11 @@ and utils modules to convert Connect Tech Inc's BSP layers into Yocto layers.
 import os
 import uuid
 import shutil
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 from . import git_helpers
 from . import package
@@ -47,6 +52,8 @@ class CTILayerGenerator:
     # This is the main class of the CTI Yocto Layer Generator. 
     # It uses functionalities from
     def generate(self):
+        logger.info("Starting to generate layers...")
+        
         self.setup_directories()
 
         if self.offline_mode:
@@ -61,9 +68,11 @@ class CTILayerGenerator:
         extracted_path = os.path.join(self.extracted_dir, os.path.splitext(os.path.basename(self.package_url))[0])
 
         if not os.path.exists(package_path):
+            logger.info(f"Package does not exist at {package_path}, downloading it...")
             package.download_package(self.package_url, package_path)
             
         if not os.path.exists(extracted_path):
+            logger.info(f"Package has not been extracted at {extracted_path}, extracting it...")
             package.extract_package(package_path, extracted_path)
             
         # Search for all debs in extracted_packages directory then 
@@ -77,6 +86,7 @@ class CTILayerGenerator:
                     # print(tmp_package_dir)
                     os.makedirs(tmp_package_dir, exist_ok=True)  # Ensure directory is created if it doesn't already exist
                     deb_file_path = os.path.join(root, file)
+                    logger.info(f"Extracting deb files from {deb_file_path} to {tmp_package_dir}")
                     package.extract_deb_files(deb_file_path, tmp_package_dir)
         
 

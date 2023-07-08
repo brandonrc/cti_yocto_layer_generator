@@ -8,12 +8,18 @@ directory management functions, and other miscellaneous helper functions.
 import os
 import shutil
 import re
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # Extract the Jetpack version from a filename.
 # args:
 # filename: the filename to extract the version from.
 def extract_jetpack_version(filename):
+    logger.info(f"Extracting Jetpack version from {filename}")
     """Extract the Jetpack version from a filename."""
     # Split the filename on the '-' character
     parts = filename.split('-')
@@ -34,6 +40,7 @@ def extract_jetpack_version(filename):
 # args:
 #  dir_path: the path to the directory to create.
 def create_directory(dir_path):
+    logger.info(f"Creating directory at {dir_path}")
     os.makedirs(dir_path, exist_ok=True)
 
 # Copy a file from one location to another.
@@ -41,4 +48,5 @@ def create_directory(dir_path):
 # src_path: the path to the source file.
 # dst_path: the path to the destination file.
 def copy_file(src_path, dst_path):
+    logger.info(f"Copying file from {src_path} to {dst_path}")
     shutil.copy(src_path, dst_path)
