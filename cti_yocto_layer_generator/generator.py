@@ -8,7 +8,7 @@ import os
 import uuid
 import shutil
 
-from . import git
+from . import git_helpers
 from . import package
 from . import utils
 
@@ -19,7 +19,7 @@ class CTILayerGenerator:
         self.offline_mode = offline_mode
         self.yocto_version = yocto_version
         self.filename = os.path.basename(package_url)
-        self.jetpack_version = utils.get_jetpack_version(self.filename)
+        self.jetpack_version = utils.extract_jetpack_version(self.filename)
         self.branch_name = f"{yocto_version}-l4t-r{self.jetpack_version}"
         self.uuid = str(uuid.uuid4())
         self.base_dir = os.path.expanduser("~/.cache/cti_yocto_layer_generator/")
@@ -50,12 +50,12 @@ class CTILayerGenerator:
         self.setup_directories()
 
         if self.offline_mode:
-            git.init_repo(self.repo_dir)
+            git_helpers.init_repo(self.repo_dir)
         else:
-            git.clone_repo(self.repo_url, self.repo_dir)
+            git_helpers.clone_repo(self.repo_url, self.repo_dir)
         
-        git.create_branch(self.repo_dir, self.branch_name)
-        git.checkout_branch(self.repo_dir, self.branch_name)
+        git_helpers.create_branch(self.repo_dir, self.branch_name)
+        git_helpers.checkout_branch(self.repo_dir, self.branch_name)
             
         package_path = os.path.join(self.package_dir, os.path.basename(self.package_url))
         extracted_path = os.path.join(self.extracted_dir, os.path.splitext(os.path.basename(self.package_url))[0])
@@ -72,12 +72,12 @@ class CTILayerGenerator:
             for file in files:
                 if file.endswith(".deb"):
                     package_name = file.rsplit('.', 1)[0]  # cut off the .deb
-                    # tmp_package_dir = os.path.join(self.debs_dir, package_name)
+                    tmp_package_dir = os.path.join(self.debs_dir, package_name)
                     # print("Extracting deb file:")
                     # print(tmp_package_dir)
-                    # os.makedirs(tmp_package_dir, exist_ok=True)  # Ensure directory is created if it doesn't already exist
+                    os.makedirs(tmp_package_dir, exist_ok=True)  # Ensure directory is created if it doesn't already exist
                     deb_file_path = os.path.join(root, file)
-                    package.extract_deb_files(deb_file_path, self.debs_dir)
+                    package.extract_deb_files(deb_file_path, tmp_package_dir)
         
 
         # here you'd continue with your generation logic, using self.repo_dir and extracted_path as the paths

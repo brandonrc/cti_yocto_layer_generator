@@ -32,7 +32,8 @@ def clone_repo(repo_url, local_dir):
 # - repo_path: path to the repo
 # - branch_name: name of the branch to check
 # returns: True if the branch exists, False otherwise
-def check_branch_exists(repo, branch_name):
+def check_branch_exists(repo_path, branch_name):
+    repo = Repo(repo_path)
     existing_branches = repo.git.branch('-a').split()
     return branch_name in existing_branches
 
@@ -40,8 +41,9 @@ def check_branch_exists(repo, branch_name):
 # Args:
 # - repo_path: path to the repo
 #  - branch_name: name of the new branch
-def create_branch(repo, branch_name):
-    if not check_branch_exists(repo, branch_name):
+def create_branch(repo_path, branch_name):
+    repo = Repo(repo_path)
+    if not check_branch_exists(repo_path, branch_name):
         try:
             repo.git.checkout('-b', branch_name)
             logger.info("Successfully created and checked out new branch")

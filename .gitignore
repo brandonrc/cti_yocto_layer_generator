@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+cti_yocto_layer_generator/__pycache__/
 *.py[cod]
 *$py.class
 
