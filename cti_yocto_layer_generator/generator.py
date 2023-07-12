@@ -77,7 +77,7 @@ class CTILayerGenerator:
             package.extract_package(package_path, extracted_path)
             
         yocto_helpers.create_layer_skeleton(self.repo_dir)
-        yocto_helpers.create_basic_config_files(self.repo_dir, utils.get_machine_name_from_package(os.path.basename(self.package_url)))
+        yocto_helpers.create_basic_config_files(self.repo_dir, utils.get_machine_name_from_package(os.path.basename(self.package_url)), self.yocto_version)
             
         # Search for all debs in extracted_packages directory then 
         # extract them into the debs directory

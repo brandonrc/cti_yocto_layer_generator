@@ -1,6 +1,7 @@
 # yocto_helpers.py
 import os
 import logging
+from . import utils
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -19,11 +20,11 @@ def create_layer_skeleton(layer_dir):
     os.makedirs(machine_dir, exist_ok=True)
     
     
-def create_basic_config_files(repo_dir, machine_name):
+def create_basic_config_files(repo_dir, machine_name, yocto_version):
     logger.info(f"Creating basic configuration files in {repo_dir}")
 
     # Determine the Tegra SoC
-    soc = get_tegra_soc(machine_name)
+    soc = utils.get_tegra_soc(machine_name)
 
     # Define the paths to the configuration files
     layer_conf_path = os.path.join(repo_dir, 'conf', 'layer.conf')
@@ -46,7 +47,7 @@ BBFILES += "${{LAYERDIR}}/recipes-*/*/*.bb \
 BBFILE_COLLECTIONS += "{machine_name}"
 BBFILE_PATTERN_{machine_name} = "^${{LAYERDIR}}/"
 BBFILE_PRIORITY_{machine_name} = "6"
-LAYERSERIES_COMPAT_{machine_name} = "honister"
+LAYERSERIES_COMPAT_{machine_name} = "{yocto_version}"
 """)
     logger.info(f"Created layer.conf file at {layer_conf_path}")
 
